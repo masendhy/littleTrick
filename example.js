@@ -91,17 +91,32 @@
 
 // ===== 6 trick (Execute Navigation API within the page context) =====
 
+// const puppeteer = require('puppeteer');
+
+// (async() =>{
+// const browser = await puppeteer.launch({headless:false});
+// const page = await browser.newPage();
+
+// await page.goto("https://pptr.dev");
+// await page.waitForSelector("title");
+
+// const metrics = await page.evaluate(() => JSON.stringify(window.performance))
+// console.log(JSON.parse(metrics));
+
+// await browser.close();
+// })();
+
+
+// ===== 6 trick (run with incognito browser) =====
+
 const puppeteer = require('puppeteer');
 
 (async() =>{
 const browser = await puppeteer.launch({headless:false});
-const page = await browser.newPage();
-
-await page.goto("https://pptr.dev");
-await page.waitForSelector("title");
-
-const metrics = await page.evaluate(() => JSON.stringify(window.performance))
-console.log(JSON.parse(metrics));
+const context = await browser.createIncognitoBrowserContext();
+const page = await context.newPage();
+await page.goto("http://zero.webappsecurity.com/index.html");
+await page.waitForTimeout(5000);
 
 await browser.close();
 })();
